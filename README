@@ -1,0 +1,43 @@
+   \||/                                                          \||/
+   \||/      ________   ___   _   ___  ______ _      _____       \||/
+ .<><><>.    | ___ \ \ / / \ | | / _ \ | ___ \ |    |  ___|    .<><><>.
+.<><><><>.   | |_/ /\ V /|  \| |/ /_\ \| |_/ / |    | |__     .<><><><>.
+'<><><><>'   |  __/  \ / | . ` ||  _  ||  __/| |    |  __|    '<><><><>'
+'<><><><>'   | |     | | | |\  || | | || |   | |____| |___    '<><><><>'
+'<><><><>'   \_|     \_/ \_| \_/\_| |_/\_|   \_____/\____/    '<><><><>'
+ '<><><>'                                                      '<><><>'
+
+PyNAPLE (PYthon Nac Automated Pair Lunar Evaluator) is an automated pipeline for change detection and impact crater detection on the lunar surface, using Lunar Reconnaissance Orbiter Narrow Angle Camera (LRO NAC) images.
+
+=========
+= Setup =   
+=========
+
+To run PyNAPLE, first ensure that ISIS3 is installed, and that $ISISROOT is properly set. Instructions on installing ISIS3 can be found at:
+
+https://isis.astrogeology.usgs.gov/documents/LegacyInstallGuide/index.html
+
+To setup PyNAPLE run:
+
+sudo chmod a+x PyNAPLE.py
+mkdir img
+mkdir processed
+
+Then to use PyNAPLE, you can simply run:
+
+./PyNAPLE.py
+
+
+PyNAPLE utilises serveral python packages in order to function. 
+In order to see what packages are needed to be installed on your system, run:
+
+./PyNAPLE.py
+
+and if any dependancies are missing, the program will terminate and write the names
+of missing dependencies to the file DEPENDENCIES.
+
+For more help, run the command:
+
+./PyNAPLE.py -h
+
+

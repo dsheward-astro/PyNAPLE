@@ -1,0 +1,6 @@
+Search Space         = 2.0
+Search Increment     = 0.25
+Maximum Incidence    = 60.0
+Incidence Difference = 15.0
+Algorithm            = MaximumCorrelation
+Tolerance            = 0.7
