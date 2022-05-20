@@ -9,6 +9,11 @@
 
 PyNAPLE (PYthon Nac Automated Pair Lunar Evaluator) is an automated pipeline for change detection and impact crater detection on the lunar surface, using Lunar Reconnaissance Orbiter Narrow Angle Camera (LRO NAC) images.
 
+To read more about PyNAPLE go to:
+
+https://arxiv.org/abs/2204.12265
+
+
 =========
 = Setup =   
 =========
