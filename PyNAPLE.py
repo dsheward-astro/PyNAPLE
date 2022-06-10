@@ -642,36 +642,39 @@ class LunarImage:
         the specified directory.
         """
         
-        if os.path.isfile(self.directory+"/img/"+self.name+".IMG"):
+        if os.path.isfile(self.directory+"/img/"+self.name+".IMG"): # RAW image downloaded but not calibrated
+            pass
+        elif os.path.isfile(self.directory+"/img/"+self.name+".cal.cub"): # Image already downloaded and calibrated
             return
-        success = False
-        while not success:
-            try:
-                success = True
-                br = mech.Browser()
-                br.set_handle_robots(False)
-                br.open("http://wms.lroc.asu.edu/lroc/search")
-                br.select_form(nr=0)
-                br["filter[product_id]"] = self.name
-                br.submit()
-                br.find_link(text="Get download URLs for this page")
-                downloadLink = br.follow_link(text="Get download URLs for this page")
-                print("Downloading image "+self.name)
-                linkToDownload = ("wget -nv "+downloadLink.read().decode("utf-8").split("\n")[0])
-
-                sp.check_call(linkToDownload, shell=True, executable="/bin/bash", cwd=self.directory+"/img", stderr=sys.stdout, stdout=DEVNULL)
-
-            except mech.URLError:
-                success = False
-            except mech.LinkNotFoundError:
-                success = False
-            except Exception as e:
-                #if 'no space left on drive' in e:
-                #    return "ERROR"
-                #else:                    
-                print(e)
-                success = False
-        
+        else:
+            success = False
+            while not success:
+                try:
+                    success = True
+                    br = mech.Browser()
+                    br.set_handle_robots(False)
+                    br.open("http://wms.lroc.asu.edu/lroc/search")
+                    br.select_form(nr=0)
+                    br["filter[product_id]"] = self.name
+                    br.submit()
+                    br.find_link(text="Get download URLs for this page")
+                    downloadLink = br.follow_link(text="Get download URLs for this page")
+                    print("Downloading image "+self.name)
+                    linkToDownload = ("wget -nv "+downloadLink.read().decode("utf-8").split("\n")[0])
+    
+                    sp.check_call(linkToDownload, shell=True, executable="/bin/bash", cwd=self.directory+"/img", stderr=sys.stdout, stdout=DEVNULL)
+    
+                except mech.URLError:
+                    success = False
+                except mech.LinkNotFoundError:
+                    success = False
+                except Exception as e:
+                    #if 'no space left on drive' in e:
+                    #    return "ERROR"
+                    #else:                    
+                    print(e)
+                    success = False
+            
         calibrationOperations = ["lronac2isis from="+self.name+".IMG to="+self.name+".cub",
                                  "spiceinit from="+self.name+".cub cksmithed=yes spksmithed=yes shape=user model=/$ISISROOT/../data/base/dems/LRO_LOLA_LDEM_global_128ppd_20100915_0002.cub",
                                  "spicefit from="+self.name+".cub",
