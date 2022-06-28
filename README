@@ -28,6 +28,8 @@ sudo chmod a+x PyNAPLE.py
 mkdir img
 mkdir processed
 
+Make sure $ISISROOT is correctly set within your environment, or set it in runIsis.sh.
+
 Then to use PyNAPLE, you can simply run:
 
 ./PyNAPLE.py
