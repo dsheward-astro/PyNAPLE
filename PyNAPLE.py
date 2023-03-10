@@ -458,7 +458,7 @@ class PyNAPLE:
 
         print(str(len(preList))+" before and "+str(len(postList))+" after images found")        
         
-        print(preList, postList)
+        #print(preList, postList)
 
         return preList, postList
 
