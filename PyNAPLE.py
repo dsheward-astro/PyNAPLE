@@ -9,6 +9,9 @@ Created on Tue Mar 29 17:25:21 2022
 #import glob
 #import tk_tools
 
+import warnings
+warnings.filterwarnings('ignore')
+
 dependencyList = []
 
 try:
@@ -35,6 +38,11 @@ try:
     import platform
 except ImportError:
     dependencyList.append("platform")
+    
+try:
+    import datetime
+except ImportError:
+    dependencyList.append("datetime")
 #import numpy as np
 #from pyds9 import *
 
@@ -288,7 +296,10 @@ class PyNAPLE:
                 cpReached = cpReached + 1
                 cpFile.write(str(cpReached))
                 cpFile.close()
-    
+        
+        #@TODO: add chopping
+        
+        
         if not proceed:
             if cpReached >= checkpoint:
                 removal = [postImage+".cal.map.cub",
@@ -394,7 +405,7 @@ class PyNAPLE:
         print("Searching for Images...")
         
         LRO_START = "2009-01-01T00:00:00.000"
-        LRO_END   = "2100-12-31T23:59:59.999"
+        LRO_END   = "2022-12-31T23:59:59.999"
         
         def longRange(long):
             while long < 0.:
@@ -410,6 +421,7 @@ class PyNAPLE:
                     br.open("http://ode.rsl.wustl.edu/moon/productsearch.aspx")
                     br.select_form(name="Form1")
                     br.toggle_single(name="cb__LRO__LROC__EDRNAC__")
+                    br.toggle_single(name="cb__LRO__LROC__EDRNAC4__")
                     br["txtMaxLatitude"]         = str(self.app.latitude.get() + self.app.currentSearchSpace.get()/2.)
                     br["txtWestLongitude"]       = str(longRange(self.app.longitude.get() - self.app.currentSearchSpace.get()/2.))
                     br["txtEastLongitude"]       = str(longRange(self.app.longitude.get() + self.app.currentSearchSpace.get()/2.))
@@ -425,9 +437,11 @@ class PyNAPLE:
                     br.submit(searchSubmit.id)
                     br.open("http://ode.rsl.wustl.edu/moon/searchResultsList.aspx")
                     imgList = []
+                    #print(br.links())
                     for link in br.links():
-                        if (None != re.match("[M]\d+[RL][E]",link.text)):
-                            imgList.append(str(link.text))
+                        #print(link.text)
+                        if (None != re.match(".*[mM]\d+[RrLl][Ee]",link.text)):
+                            imgList.append(str(link.text).split(".")[-1].upper())
         
                 # If the link isnt found try again. Wait 15s to avoid becoming an unintentional DDoS
                 except mech.URLError:
@@ -439,10 +453,13 @@ class PyNAPLE:
             return imgList
         
         date = str(self.app.epoch)
-        preList = genList(LRO_START, date)
         postList = genList(date, LRO_END)
+        preList = genList(LRO_START, date)
 
         print(str(len(preList))+" before and "+str(len(postList))+" after images found")        
+        
+        print(preList, postList)
+
         return preList, postList
 
 
